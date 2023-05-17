@@ -1,0 +1,11 @@
+micronaut:
+  application:
+    name: candleAnalyzer
+datasources:
+  default:
+    driver-class-name: org.postgresql.Driver
+    db-type: postgres
+netty:
+  default:
+    allocator:
+      max-order: 3

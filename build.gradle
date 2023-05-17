@@ -1,0 +1,51 @@
+plugins {
+    id("groovy") 
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.micronaut.application") version "3.7.9"
+    id("io.micronaut.test-resources") version "3.7.9"
+}
+
+version = "0.1"
+group = "io.andrewdvizhok"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-jackson-databind")
+    implementation("io.micronaut.groovy:micronaut-runtime-groovy")
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    implementation("org.apache.logging.log4j:log4j-api")
+    implementation platform("org.apache.logging.log4j:log4j-bom:2.19.0")
+    compileOnly("io.micronaut:micronaut-http-validation")
+    runtimeOnly("org.apache.logging.log4j:log4j-core")
+    runtimeOnly("org.apache.logging.log4j:log4j-slf4j-impl")
+    runtimeOnly("org.postgresql:postgresql")
+}
+
+application {
+    mainClass.set("io.andrewdvizhok.Application")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("11")
+    targetCompatibility = JavaVersion.toVersion("11")
+}
+
+graalvmNative.toolchainDetection = false
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("io.andrewdvizhok.*")
+    }
+    testResources {
+        additionalModules.add("jdbc-postgresql")
+    }
+}
+
+
+
