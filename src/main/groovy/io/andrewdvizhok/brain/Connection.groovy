@@ -1,8 +1,13 @@
 package io.andrewdvizhok.brain
 
 abstract class Connection {
-    BigDecimal strength
+    Integer id
+    private BigDecimal strength
     Neuron incomingNeuron
     Neuron outgoingNeuron
-    Integer changed
+    Integer changed = 0
+    abstract void setStrength(BigDecimal newStrength)
+    BigDecimal getStrength(){
+        return strength
+    }
 }

@@ -1,6 +1,7 @@
 package io.andrewdvizhok.brain
 
 abstract class Brain {
-    Map<Integer, Neuron> layers
+    Integer id
+    Map<Integer, Map<Integer, List<Neuron>>> layers
     Integer changed
 }

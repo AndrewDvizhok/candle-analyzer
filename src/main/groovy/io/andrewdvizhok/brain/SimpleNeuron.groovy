@@ -13,14 +13,18 @@ class SimpleNeuron extends Neuron {
     @Override
     void setValue(BigDecimal newValue) {
         value = newValue
-        clearValue()
+        changed++
+        //clear all outgoing neurons
+        outgoingConn.each {it.outgoingNeuron.clearValue() }
     }
 
     @Override
     void clearValue() {
-        value = null
-        //clear all outgoing neurons
-        outgoingConn.each {it.outgoingNeuron.clearValue() }
+        if(value != null){
+            value = null
+            //clear all outgoing neurons
+            outgoingConn.each {it.outgoingNeuron.clearValue() }
+        }
     }
 
 }
