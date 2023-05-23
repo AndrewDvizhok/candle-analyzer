@@ -1,6 +1,8 @@
 package io.andrewdvizhok.brain
 
-class SimpleBrainFabric extends BrainFabric{
+class SimpleBrainFabric extends BrainFabric {
+
+    private Brain brain
 
     /**
      * This parameter identifies brain structure
@@ -17,30 +19,43 @@ class SimpleBrainFabric extends BrainFabric{
      */
     private List<Integer[]> network
 
-    SimpleBrainFabric(Map<Integer, Integer[]> parameters, List<Integer[]> network){
+    SimpleBrainFabric(Map<Integer, Integer[]> parameters, List<Integer[]> network) {
         this.parameters = parameters
         this.network = network
     }
 
     @Override
     Brain getBrain() {
-        def brain = new SimpleBrain()
-        brain.layers = new HashMap<>(parameters.size())
-        parameters.each{ layerNum, layer ->
-            brain.layers[layerNum] = new HashMap<Integer, List<Neuron>>(layer.size())
-            layer.each{groupNum, countNeurons->
-                brain.layers[layerNum][groupNum] = new ArrayList<Neuron>(countNeurons)
-                0..countNeurons.each {
+        fillNeurons()
+        return brain
+    }
 
+    void fillNeurons(){
+        brain = new SimpleBrain()
+        brain.layers = new HashMap<>(parameters.size())
+        parameters.each { layerNum, layer ->
+            brain.layers[layerNum] = new HashMap<Integer, List<Neuron>>(layer.size())
+            layer.each { groupNum, countNeurons ->
+                brain.layers[layerNum][groupNum] = new ArrayList<Neuron>(countNeurons)
+                1..countNeurons.each {
+                    brain.layers[layerNum][groupNum].add(new SimpleNeuron(layer: layerNum, group: groupNum))
                 }
-                //fill array with neurons
             }
         }
-        return null
     }
 
     @Override
     void trainBrain(Brain brain, Map<Integer, BigDecimal> inputs, Map<Integer, BigDecimal> outputs) {
 
+    }
+
+    @Override
+    Neuron getNeuron() {
+        return new SimpleNeuron()
+    }
+
+    @Override
+    Connection getConnection() {
+        return new SimpleConnection()
     }
 }

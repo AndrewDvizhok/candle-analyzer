@@ -1,7 +1,7 @@
 package io.andrewdvizhok.brain
 
 abstract class Neuron {
-    Integer id
+    Integer id, layer, group
     private BigDecimal value
     BigDecimal bias
     Integer changed = 0
