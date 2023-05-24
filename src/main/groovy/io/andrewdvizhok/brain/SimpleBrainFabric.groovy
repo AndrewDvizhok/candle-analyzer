@@ -2,8 +2,6 @@ package io.andrewdvizhok.brain
 
 class SimpleBrainFabric extends BrainFabric {
 
-    private Brain brain
-
     /**
      * This parameter identifies brain structure
      * [ layer_A: [group_a:count,group_b:count],
@@ -19,26 +17,26 @@ class SimpleBrainFabric extends BrainFabric {
      */
     private List<Integer[]> network
 
-    SimpleBrainFabric(Map<Integer, Integer[]> parameters, List<Integer[]> network) {
+    SimpleBrainFabric(Map<Integer, Map<Integer, Integer>> parameters, List<Integer[]> network) {
         this.parameters = parameters
         this.network = network
     }
 
     @Override
     Brain getBrain() {
-        fillNeurons()
-        return brain
+        def newBrain = new SimpleBrain()
+        fillNeurons(newBrain)
+        return newBrain
     }
 
-    void fillNeurons(){
-        brain = new SimpleBrain()
-        brain.layers = new HashMap<>(parameters.size())
+    private void fillNeurons(Brain b){
+        b.layers = new HashMap<>(parameters.size())
         parameters.each { layerNum, layer ->
-            brain.layers[layerNum] = new HashMap<Integer, List<Neuron>>(layer.size())
+            b.layers[layerNum] = new HashMap<Integer, List<Neuron>>(layer.size())
             layer.each { groupNum, countNeurons ->
-                brain.layers[layerNum][groupNum] = new ArrayList<Neuron>(countNeurons)
+                b.layers[layerNum][groupNum] = new ArrayList<Neuron>(countNeurons)
                 1..countNeurons.each {
-                    brain.layers[layerNum][groupNum].add(new SimpleNeuron(layer: layerNum, group: groupNum))
+                    b.layers[layerNum][groupNum].add(new SimpleNeuron(layer: layerNum, group: groupNum))
                 }
             }
         }
